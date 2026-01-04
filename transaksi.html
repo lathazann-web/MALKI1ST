@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Transaksi</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+      <div class="container">
+        <a class="navbar-brand" href="index.html">📚 Perpustakaan</a>
+
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">Home</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="transaksi.html">Transaksi</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="daftar_transaksi.html"
+                >Daftar Transaksi</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mt-5">
+      <h3 id="judul">Transaksi Peminjaman</h3>
+
+      <form id="formTransaksi">
+        <input type="hidden" id="index" />
+
+        <div class="mb-3">
+          <label>Nama Peminjam</label>
+          <input type="text" id="nama" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+          <label>Judul Buku</label>
+          <input type="text" id="buku" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+          <label>Tanggal Pinjam</label>
+          <input type="date" id="tanggal" class="form-control" required />
+        </div>
+
+        <button class="btn btn-success">Simpan</button>
+        <a href="daftar_transaksi.html" class="btn btn-secondary">Batal</a>
+      </form>
+    </div>
+
+    <script>
+      let data = JSON.parse(localStorage.getItem("transaksi")) || [];
+      let index = localStorage.getItem("editIndex");
+
+      if (index !== null) {
+        document.getElementById("judul").innerText = "Edit Transaksi";
+        let t = data[index];
+        document.getElementById("nama").value = t.nama;
+        document.getElementById("buku").value = t.buku;
+        document.getElementById("tanggal").value = t.tanggal;
+        document.getElementById("index").value = index;
+      }
+
+      document
+        .getElementById("formTransaksi")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          let transaksi = {
+            nama: nama.value,
+            buku: buku.value,
+            tanggal: tanggal.value,
+          };
+
+          let i = document.getElementById("index").value;
+
+          if (i === "") {
+            data.push(transaksi);
+          } else {
+            data[i] = transaksi;
+            localStorage.removeItem("editIndex");
+          }
+
+          localStorage.setItem("transaksi", JSON.stringify(data));
+          window.location.href = "daftar_transaksi.html";
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
